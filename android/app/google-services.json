@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "485934362378",
+    "project_id": "inabit-assignment",
+    "storage_bucket": "inabit-assignment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485934362378:android:b144d693b6184b2a2f14f3",
+        "android_client_info": {
+          "package_name": "com.example.inabit_assignment"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDldZF4qX6ULEwLCUZVbwv_vJtBEbwELt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

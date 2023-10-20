@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inabit_assignment/bloc/bloc_exports.dart';
 import 'package:inabit_assignment/firebase_options.dart';
 import 'package:inabit_assignment/repositories/google_auth_repository.dart';
+import 'package:inabit_assignment/screens/home_screen.dart';
 import 'package:inabit_assignment/screens/sign_in_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -30,9 +32,20 @@ class MyApp extends StatelessWidget {
           create: (context) => GoogleAuthBloc(GoogleAuthRepository()),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: SignInScreen(),
+        home: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              return const HomeScreen();
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator.adaptive();
+            } else {
+              return const SignInScreen();
+            }
+          },
+        ),
       ),
     );
   }

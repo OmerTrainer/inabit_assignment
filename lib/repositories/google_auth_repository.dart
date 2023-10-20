@@ -29,4 +29,8 @@ class GoogleAuthRepository {
         await _firebaseAuth.signInWithCredential(credential);
     return userCredential.user!;
   }
+
+  void signOut() {
+    _firebaseAuth.signOut();
+  }
 }

@@ -13,3 +13,10 @@ class GoogleAuthLogin extends GoogleAuthEvent {
   @override
   List<Object> get props => [];
 }
+
+class GoogleAuthSignOut extends GoogleAuthEvent {
+  const GoogleAuthSignOut();
+
+  @override
+  List<Object> get props => [];
+}

@@ -10,10 +10,11 @@ class GoogleAuthBloc extends Bloc<GoogleAuthEvent, GoogleAuthState> {
   final GoogleAuthRepository _googleAuthRepository;
   GoogleAuthBloc(this._googleAuthRepository) : super(GoogleAuthInitial()) {
     on<GoogleAuthLogin>(_googleLogin);
+    on<GoogleAuthSignOut>(_googleSignOut);
   }
 
   void _googleLogin(
-      GoogleAuthEvent event, Emitter<GoogleAuthState> emit) async {
+      GoogleAuthLogin event, Emitter<GoogleAuthState> emit) async {
     emit(GoogleAuthLoading());
 
     try {
@@ -26,5 +27,10 @@ class GoogleAuthBloc extends Bloc<GoogleAuthEvent, GoogleAuthState> {
     } catch (e) {
       emit(GoogleAuthFailed(error: e.toString()));
     }
+  }
+
+  void _googleSignOut(
+      GoogleAuthSignOut event, Emitter<GoogleAuthState> emit) async {
+    _googleAuthRepository.signOut();
   }
 }

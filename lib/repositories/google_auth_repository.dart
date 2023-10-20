@@ -32,5 +32,6 @@ class GoogleAuthRepository {
 
   void signOut() {
     _firebaseAuth.signOut();
+    _googleSignIn.signOut();
   }
 }

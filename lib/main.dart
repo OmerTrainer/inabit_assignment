@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.userChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
-              return const HomeScreen();
+              return HomeScreen(snapshot.data!);
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator.adaptive();
             } else {

@@ -7,9 +7,9 @@ import 'package:inabit_assignment/firebase_options.dart';
 import 'package:inabit_assignment/repositories/article_repository.dart';
 import 'package:inabit_assignment/repositories/google_auth_repository.dart';
 import 'package:inabit_assignment/repositories/language_repository.dart';
-import 'package:inabit_assignment/screens/article_details_screen.dart';
 import 'package:inabit_assignment/screens/home_screen.dart';
 import 'package:inabit_assignment/screens/sign_in_screen.dart';
+import 'package:inabit_assignment/screens/splash_screen.dart';
 import 'package:path_provider/path_provider.dart';
 
 void main() async {
@@ -22,7 +22,7 @@ void main() async {
       storageDirectory: await getApplicationDocumentsDirectory());
   HydratedBloc.storage = storage;
   Bloc.observer = MyBlocObserver();
-  runApp(const MyApp());
+  runApp(const SplashScreen());
 }
 
 class MyApp extends StatelessWidget {
@@ -42,26 +42,19 @@ class MyApp extends StatelessWidget {
           create: (context) => LanguageBloc(LanguageRepository()),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        routes: {
-          ArticleDetailsScreen.routeName: (context) =>
-              const ArticleDetailsScreen(),
+      child: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.userChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            context.read<ArticleBloc>().add(const FetchArticles());
+            context.read<LanguageBloc>().add(const FetchLanguages());
+            return HomeScreen(snapshot.data!);
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator.adaptive();
+          } else {
+            return const SignInScreen();
+          }
         },
-        home: StreamBuilder<User?>(
-          stream: FirebaseAuth.instance.userChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData && snapshot.data != null) {
-              context.read<ArticleBloc>().add(const FetchArticles());
-              context.read<LanguageBloc>().add(const FetchLanguages());
-              return HomeScreen(snapshot.data!);
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const CircularProgressIndicator.adaptive();
-            } else {
-              return const SignInScreen();
-            }
-          },
-        ),
       ),
     );
   }

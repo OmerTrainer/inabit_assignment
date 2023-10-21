@@ -6,3 +6,10 @@ sealed class ArticleEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
+
+class FetchArticles extends ArticleEvent {
+  const FetchArticles();
+
+  @override
+  List<Object> get props => [];
+}

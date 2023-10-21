@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inabit_assignment/models/article_model.dart';
+import 'package:inabit_assignment/utils/device_utils.dart';
 
 class ArticleItem extends StatelessWidget {
   final ArticleModel article;
@@ -8,8 +9,8 @@ class ArticleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.grey,
       width: double.infinity,
+      decoration: BoxDecoration(border: Border.all(color: Colors.black)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -17,7 +18,12 @@ class ArticleItem extends StatelessWidget {
           Text(article.title),
           Image.network(
             article.image,
-            fit: BoxFit.fitWidth,
+            errorBuilder: (context, error, stackTrace) => Center(
+              child: SizedBox(
+                height: DeviceUtils.getScaledHeight(context, 0.15),
+                child: CircularProgressIndicator.adaptive(),
+              ),
+            ),
           ),
           Align(
             alignment: Alignment.centerRight,

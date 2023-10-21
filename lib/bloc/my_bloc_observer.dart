@@ -4,6 +4,8 @@ class MyBlocObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
+
+    //added in order to keep track of the events calls
     print(event.runtimeType);
   }
 

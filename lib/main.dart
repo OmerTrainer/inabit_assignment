@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inabit_assignment/bloc/bloc_exports.dart';
 import 'package:inabit_assignment/firebase_options.dart';
+import 'package:inabit_assignment/repositories/article_repository.dart';
 import 'package:inabit_assignment/repositories/google_auth_repository.dart';
 import 'package:inabit_assignment/screens/home_screen.dart';
 import 'package:inabit_assignment/screens/sign_in_screen.dart';
@@ -31,6 +32,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => GoogleAuthBloc(GoogleAuthRepository()),
         ),
+        BlocProvider(
+          create: (context) => ArticleBloc(ArticleRepository()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -38,6 +42,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.userChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
+              context.read<ArticleBloc>().add(const FetchArticles());
               return HomeScreen(snapshot.data!);
             } else if (snapshot.connectionState == ConnectionState.waiting) {
               return const CircularProgressIndicator.adaptive();

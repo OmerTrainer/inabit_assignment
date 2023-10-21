@@ -11,38 +11,40 @@ class LatestNews extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ArticleBloc, ArticleState>(
       builder: (context, state) {
-        if (state is ArticleSuccessState) {
-          List<ArticleModel> news = state.news;
-          return news.isEmpty
-              ? const Center(
-                  child: Text('no Articles Found'),
-                )
-              : Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('latest news'),
-                      Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: news.length,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ArticleItem(
-                              article: news[index],
-                            ),
+        print(state.status);
+        List<ArticleModel> news = state.news;
+        if (state.status == ArticleStatus.error) {
+          return const Center(child: Text('error'));
+        }
+        if (state.status == ArticleStatus.loading ||
+            state.status == ArticleStatus.initial) {
+          return const Center(child: CircularProgressIndicator.adaptive());
+        }
+        return news.isEmpty
+            ? const Center(
+                child: Text('no Articles Found'),
+              )
+            : Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('latest news'),
+                    Expanded(
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: news.length,
+                        itemBuilder: (context, index) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ArticleItem(
+                            article: news[index],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                );
-        } else {
-          return const Center(
-            child: CircularProgressIndicator.adaptive(),
-          );
-        }
+                    ),
+                  ],
+                ),
+              );
       },
     );
   }

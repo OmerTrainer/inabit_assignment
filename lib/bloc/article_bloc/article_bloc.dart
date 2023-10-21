@@ -11,19 +11,20 @@ part 'article_state.dart';
 
 class ArticleBloc extends HydratedBloc<ArticleEvent, ArticleState> {
   final ArticleRepository _articleRepository;
-  ArticleBloc(this._articleRepository) : super(ArticleInitial()) {
+  ArticleBloc(this._articleRepository) : super(const ArticleState()) {
     on<FetchArticles>(_fetchArticles);
     on<ChoseArticle>(_choseArticle);
   }
 
   void _fetchArticles(FetchArticles event, Emitter<ArticleState> emit) async {
-    emit(ArticleLoadingState());
+    if (state.status == ArticleStatus.success && event.language.isEmpty) return;
+    emit(const ArticleState(news: [], status: ArticleStatus.loading));
     try {
       List<ArticleModel> news =
           await _articleRepository.getAllArticles(language: event.language);
-      emit(ArticleSuccessState(news: news));
+      emit(ArticleState(news: news, status: ArticleStatus.success));
     } catch (e) {
-      emit(ArticleFailedState());
+      emit(const ArticleState(news: [], status: ArticleStatus.error));
     }
   }
 
@@ -34,15 +35,11 @@ class ArticleBloc extends HydratedBloc<ArticleEvent, ArticleState> {
 
   @override
   ArticleState? fromJson(Map<String, dynamic> json) {
-    return ArticleSuccessState.fromJson(json);
+    return ArticleState.fromJson(json);
   }
 
   @override
   Map<String, dynamic>? toJson(ArticleState state) {
-    if (state is ArticleSuccessState) {
-      return state.toJson();
-    } else {
-      return null;
-    }
+    return state.toJson();
   }
 }

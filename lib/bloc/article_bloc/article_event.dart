@@ -22,5 +22,5 @@ class ChoseArticle extends ArticleEvent {
   const ChoseArticle({required this.article, required this.context});
 
   @override
-  List<Object> get props => [article];
+  List<Object> get props => [article, context];
 }

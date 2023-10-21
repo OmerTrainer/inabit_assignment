@@ -40,16 +40,17 @@ class ArticleModel extends Equatable {
 
   Map<String, dynamic> toJson() => _$ArticleModelToJson(this);
 
-  ArticleModel copyWith(
-      {String? id,
-      String? title,
-      DateTime? date,
-      String? author,
-      String? description,
-      String? image,
-      String? language,
-      String? url,
-      List<String>? category}) {
+  ArticleModel copyWith({
+    String? id,
+    String? title,
+    DateTime? date,
+    String? author,
+    String? description,
+    String? image,
+    String? language,
+    String? url,
+    List<String>? category,
+  }) {
     return ArticleModel(
       id: id ?? this.id,
       title: title ?? this.title,

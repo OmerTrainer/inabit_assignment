@@ -11,7 +11,6 @@ class LatestNews extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ArticleBloc, ArticleState>(
       builder: (context, state) {
-        print(state.status);
         List<ArticleModel> news = state.news;
         if (state.status == ArticleStatus.error) {
           return const Center(child: Text('error'));

@@ -8,8 +8,19 @@ sealed class ArticleEvent extends Equatable {
 }
 
 class FetchArticles extends ArticleEvent {
-  const FetchArticles();
+  final String language;
+  const FetchArticles({this.language = ''});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [language];
+}
+
+class ChoseArticle extends ArticleEvent {
+  final ArticleModel article;
+  final BuildContext context;
+
+  const ChoseArticle({required this.article, required this.context});
+
+  @override
+  List<Object> get props => [article];
 }

@@ -2,18 +2,19 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:inabit_assignment/models/article_model.dart';
-import '../api/api_key.dart';
+import 'package:inabit_assignment/repositories/firestore_repository.dart';
 
 class ArticleRepository {
   String baseUrl = 'https://api.currentsapi.services/v1';
   String searchBaseUrl = 'https://api.currentsapi.services/v1/search';
-
   Future<List<ArticleModel>> getAllArticles({String language = ''}) async {
+    //everytime data is fetched i check for new apikey instead of a change
+    String apiKey = await FireStoreRepository().retrieveApiKey();
     List<ArticleModel> news = [];
     Response response = await get(
       Uri.parse(language.isNotEmpty
-          ? '$searchBaseUrl?language=$language&apiKey=${Secrets.apiKey}'
-          : '$baseUrl/latest-news?apiKey=${Secrets.apiKey}'),
+          ? '$searchBaseUrl?language=$language&apiKey=$apiKey'
+          : '$baseUrl/latest-news?apiKey=$apiKey'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },

@@ -14,10 +14,6 @@ class ArticleDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(selectedArticle.title),
-        actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.star_border_outlined))
-        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
